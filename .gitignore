@@ -43,3 +43,6 @@ data/*.db
 
 # Generated Plots (Optional: usually we regenerate them)
 plots/*.png
+
+# Agent Artifacts
+.github/
