@@ -1,0 +1,101 @@
+date,amount,category,payment_method,notes
+2025-01-01,300.00,Groceries,UPI,Auto-sample #1 for groceries
+2025-01-04,500.00,Food,Cash,Auto-sample #2 for food
+2025-01-08,700.00,Transport,Card,Auto-sample #3 for transport
+2025-01-11,855.00,Entertainment,NetBanking,Auto-sample #4 for entertainment
+2025-01-15,1055.00,Health,Bank Transfer,Auto-sample #5 for health
+2025-01-18,1055.00,Utilities,UPI,Auto-sample #6 for utilities
+2025-01-22,1210.00,Rent,Cash,Auto-sample #7 for rent
+2025-01-25,1235.00,Other,Card,Auto-sample #8 for other
+2025-01-29,1435.00,Groceries,NetBanking,Auto-sample #9 for groceries
+2025-02-01,510.00,Food,Bank Transfer,Auto-sample #10 for food
+2025-02-05,510.00,Transport,UPI,Auto-sample #11 for transport
+2025-02-08,710.00,Entertainment,Cash,Auto-sample #12 for entertainment
+2025-02-12,865.00,Health,Card,Auto-sample #13 for health
+2025-02-15,1065.00,Utilities,NetBanking,Auto-sample #14 for utilities
+2025-02-19,1090.00,Rent,Bank Transfer,Auto-sample #15 for rent
+2025-02-22,1045.00,Other,UPI,Auto-sample #16 for other
+2025-02-26,1245.00,Groceries,Cash,Auto-sample #17 for groceries
+2025-03-01,1445.00,Food,Card,Auto-sample #18 for food
+2025-03-05,520.00,Transport,NetBanking,Auto-sample #19 for transport
+2025-03-08,720.00,Entertainment,Bank Transfer,Auto-sample #20 for entertainment
+2025-03-12,720.00,Health,UPI,Auto-sample #21 for health
+2025-03-15,700.00,Utilities,Cash,Auto-sample #22 for utilities
+2025-03-19,900.00,Rent,Card,Auto-sample #23 for rent
+2025-03-22,1100.00,Other,NetBanking,Auto-sample #24 for other
+2025-03-26,1255.00,Groceries,Bank Transfer,Auto-sample #25 for groceries
+2025-03-29,1255.00,Food,UPI,Auto-sample #26 for food
+2025-04-02,1455.00,Transport,Cash,Auto-sample #27 for transport
+2025-04-05,530.00,Entertainment,Card,Auto-sample #28 for entertainment
+2025-04-09,555.00,Health,NetBanking,Auto-sample #29 for health
+2025-04-12,755.00,Utilities,Bank Transfer,Auto-sample #30 for utilities
+2025-04-16,710.00,Rent,UPI,Auto-sample #31 for rent
+2025-04-19,910.00,Other,Cash,Auto-sample #32 for other
+2025-04-23,1110.00,Groceries,Card,Auto-sample #33 for groceries
+2025-04-27,1265.00,Food,NetBanking,Auto-sample #34 for food
+2025-04-30,1465.00,Transport,Bank Transfer,Auto-sample #35 for transport
+2025-05-04,1290.00,Entertainment,UPI,Auto-sample #36 for entertainment
+2025-05-07,365.00,Health,Cash,Auto-sample #37 for health
+2025-05-11,565.00,Utilities,Card,Auto-sample #38 for utilities
+2025-05-14,765.00,Rent,NetBanking,Auto-sample #39 for rent
+2025-05-18,920.00,Other,Bank Transfer,Auto-sample #40 for other
+2025-05-21,920.00,Groceries,UPI,Auto-sample #41 for groceries
+2025-05-25,1120.00,Food,Cash,Auto-sample #42 for food
+2025-05-28,1100.00,Transport,Card,Auto-sample #43 for transport
+2025-06-01,1300.00,Entertainment,NetBanking,Auto-sample #44 for entertainment
+2025-06-04,1500.00,Health,Bank Transfer,Auto-sample #45 for health
+2025-06-08,375.00,Utilities,UPI,Auto-sample #46 for utilities
+2025-06-11,575.00,Rent,Cash,Auto-sample #47 for rent
+2025-06-15,775.00,Other,Card,Auto-sample #48 for other
+2025-06-18,930.00,Groceries,NetBanking,Auto-sample #49 for groceries
+2025-06-22,955.00,Food,Bank Transfer,Auto-sample #50 for food
+2025-06-25,955.00,Transport,UPI,Auto-sample #51 for transport
+2025-06-29,1110.00,Entertainment,Cash,Auto-sample #52 for entertainment
+2025-07-02,1310.00,Health,Card,Auto-sample #53 for health
+2025-07-06,1510.00,Utilities,NetBanking,Auto-sample #54 for utilities
+2025-07-09,585.00,Rent,Bank Transfer,Auto-sample #55 for rent
+2025-07-13,585.00,Other,UPI,Auto-sample #56 for other
+2025-07-16,610.00,Groceries,Cash,Auto-sample #57 for groceries
+2025-07-20,765.00,Food,Card,Auto-sample #58 for food
+2025-07-23,965.00,Transport,NetBanking,Auto-sample #59 for transport
+2025-07-27,1165.00,Entertainment,Bank Transfer,Auto-sample #60 for entertainment
+2025-07-30,1120.00,Health,UPI,Auto-sample #61 for health
+2025-08-03,1320.00,Utilities,Cash,Auto-sample #62 for utilities
+2025-08-06,1520.00,Rent,Card,Auto-sample #63 for rent
+2025-08-10,420.00,Other,NetBanking,Auto-sample #64 for other
+2025-08-13,620.00,Groceries,Bank Transfer,Auto-sample #65 for groceries
+2025-08-17,620.00,Food,UPI,Auto-sample #66 for food
+2025-08-21,775.00,Transport,Cash,Auto-sample #67 for transport
+2025-08-24,975.00,Entertainment,Card,Auto-sample #68 for entertainment
+2025-08-28,1175.00,Health,NetBanking,Auto-sample #69 for health
+2025-08-31,1330.00,Utilities,Bank Transfer,Auto-sample #70 for utilities
+2025-09-04,1155.00,Rent,UPI,Auto-sample #71 for rent
+2025-09-07,1355.00,Other,Cash,Auto-sample #72 for other
+2025-09-11,430.00,Groceries,Card,Auto-sample #73 for groceries
+2025-09-14,630.00,Food,NetBanking,Auto-sample #74 for food
+2025-09-18,830.00,Transport,Bank Transfer,Auto-sample #75 for transport
+2025-09-21,785.00,Entertainment,UPI,Auto-sample #76 for entertainment
+2025-09-25,985.00,Health,Cash,Auto-sample #77 for health
+2025-09-28,1010.00,Utilities,Card,Auto-sample #78 for utilities
+2025-10-02,1165.00,Rent,NetBanking,Auto-sample #79 for rent
+2025-10-05,1365.00,Other,Bank Transfer,Auto-sample #80 for other
+2025-10-09,1365.00,Groceries,UPI,Auto-sample #81 for groceries
+2025-10-12,440.00,Food,Cash,Auto-sample #82 for food
+2025-10-16,640.00,Transport,Card,Auto-sample #83 for transport
+2025-10-19,840.00,Entertainment,NetBanking,Auto-sample #84 for entertainment
+2025-10-23,820.00,Health,Bank Transfer,Auto-sample #85 for health
+2025-10-26,820.00,Utilities,UPI,Auto-sample #86 for utilities
+2025-10-30,1020.00,Rent,Cash,Auto-sample #87 for rent
+2025-11-02,1175.00,Other,Card,Auto-sample #88 for other
+2025-11-06,1375.00,Groceries,NetBanking,Auto-sample #89 for groceries
+2025-11-09,1575.00,Food,Bank Transfer,Auto-sample #90 for food
+2025-11-13,450.00,Transport,UPI,Auto-sample #91 for transport
+2025-11-16,475.00,Entertainment,Cash,Auto-sample #92 for entertainment
+2025-11-20,675.00,Health,Card,Auto-sample #93 for health
+2025-11-23,830.00,Utilities,NetBanking,Auto-sample #94 for utilities
+2025-11-27,1030.00,Rent,Bank Transfer,Auto-sample #95 for rent
+2025-11-30,1030.00,Other,UPI,Auto-sample #96 for other
+2025-12-04,1185.00,Groceries,Cash,Auto-sample #97 for groceries
+2025-12-07,1385.00,Food,Card,Auto-sample #98 for food
+2025-12-11,1410.00,Transport,NetBanking,Auto-sample #99 for transport
+2025-12-15,485.00,Entertainment,Bank Transfer,Auto-sample #100 for entertainment
