@@ -303,7 +303,8 @@ def analytics_ui():
         cols = st.columns(2)
         for idx, plot_path in enumerate(saved_plots):
             with cols[idx % 2]:
-                st.image(plot_path.read_bytes(), caption=plot_path.name, use_column_width=True)
+                if plot_path.exists():
+                    st.image(str(plot_path), caption=plot_path.name, use_container_width=True)
     else:
         st.caption("No saved plots yet.")
 
@@ -552,7 +553,7 @@ def main():
     inject_css()
     init_app_state()
     st.sidebar.title("Expense Analytics")
-    choice = st.sidebar.radio("Navigate", NAVIGATION)
+    choice = st.sidebar.radio("Navigate", NAVIGATION, key="navigation_radio")
 
     if choice == "Dashboard":
         dashboard_ui()
