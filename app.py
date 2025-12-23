@@ -163,7 +163,7 @@ def manage_expenses_ui():
     edited_df = st.data_editor(
         view_df,
         hide_index=True,
-        use_container_width=True,
+        width="stretch",
         disabled=["id", "date", "category", "payment_method", "amount", "notes"],
         column_config={
             "Select": st.column_config.CheckboxColumn(required=False),
@@ -212,7 +212,7 @@ def manage_expenses_ui():
         edited_data = st.data_editor(
             to_edit,
             hide_index=True,
-            use_container_width=True,
+            width="stretch",
             disabled=["id"],
             column_config={
                 "id": st.column_config.Column("ID", disabled=True),
@@ -283,13 +283,13 @@ def analytics_ui():
     with col2:
         fig_daily, plotly_daily = AnalyticsService.daily_trend(filtered)
         if plotly_daily is not None:
-            st.plotly_chart(plotly_daily, use_container_width=True)
+            st.plotly_chart(plotly_daily, width="stretch")
         else:
             st.pyplot(fig_daily)
 
     fig_monthly, plotly_monthly = AnalyticsService.monthly_comparison(filtered)
     if plotly_monthly is not None:
-        st.plotly_chart(plotly_monthly, use_container_width=True)
+        st.plotly_chart(plotly_monthly, width="stretch")
     else:
         st.pyplot(fig_monthly)
 
@@ -304,7 +304,7 @@ def analytics_ui():
         for idx, plot_path in enumerate(saved_plots):
             with cols[idx % 2]:
                 if plot_path.exists():
-                    st.image(str(plot_path), caption=plot_path.name, use_container_width=True)
+                    st.image(str(plot_path), caption=plot_path.name, width="stretch")
     else:
         st.caption("No saved plots yet.")
 
@@ -537,11 +537,11 @@ def dashboard_ui():
 
             chart_col1, chart_col2 = st.columns(2)
             with chart_col1:
-                st.plotly_chart(donut, use_container_width=True)
+                st.plotly_chart(donut, width="stretch")
             with chart_col2:
-                st.plotly_chart(daily_line, use_container_width=True)
+                st.plotly_chart(daily_line, width="stretch")
 
-            st.plotly_chart(bar_all, use_container_width=True)
+            st.plotly_chart(bar_all, width="stretch")
 
 
 
