@@ -1,326 +1,1011 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[a4paper,margin=1in]{geometry}
+\documentclass[12pt,a4paper]{article}
+\usepackage[a4paper, top=1in, bottom=1in, left=1in, right=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{booktabs}
+\usepackage{caption}
 \usepackage{hyperref}
-\usepackage{amsmath}
 \usepackage{listings}
 \usepackage{xcolor}
-\lstset{
-    basicstyle=\ttfamily\small,
-    breaklines=true,
-    breakatwhitespace=false,
-    frame=single,
-    numbers=left,
-    numberstyle=\tiny,
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+
+% Font styling (Times New Roman-like if standard LaTeX)
+\usepackage{mathptmx}
+
+% Code listing style
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegray},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
     showstringspaces=false,
-    columns=fullflexible,
-    keepspaces=true,
-    captionpos=b
+    showtabs=false,                  
+    tabsize=2
 }
-\usepackage{tikz}
-\usetikzlibrary{positioning, arrows.meta}
-\usepackage{caption}
-\usepackage{subcaption}
-\setlength{\intextsep}{12pt plus 4pt minus 4pt}
-\setlength{\textfloatsep}{14pt plus 6pt minus 6pt}
-\setlength{\floatsep}{14pt plus 6pt minus 6pt}
-\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
-\title{Streamlit Expense Analytics: Visualization-Driven Personal Finance Dashboard}
-\author{Liv Grewal (1424000076) \and Gurman (1424000041)}
-\date{December 2025}
+\lstset{style=mystyle}
+
+% Section formatting to match "I. Introduction..." style if desired, or standard 1. Introduction
+\renewcommand\thesection{\Roman{section}.}
+\renewcommand\thesubsection{\thesection\arabic{subsection}}
 
 \begin{document}
-\maketitle
 
-\begin{abstract}
-This report presents a web-based expense analytics platform built with Streamlit, SQLite, and Plotly. The system delivers full expense CRUD, budgeting, savings goals, alerting, and reusable visualizations. Recent enhancements add quicker expense entry, stable multi-row editing with session persistence, richer dashboard controls, and inline rendering of saved PNG plots.
-\end{abstract}
-
-\section{Introduction}
-Personal finance tools often lack transparent analytics and reusable visual evidence for reports. This project provides a lightweight yet expressive dashboard that unifies data collection, analysis, and visualization with minimal setup.
-
-\section{Problem Statement}
-Users need a frictionless way to capture daily expenses, monitor budgets, and visualize spending trends without complex installations. The system must persist data, provide alerts near budget thresholds, and export visuals for documentation.
-
-\section{Objectives}
-\begin{itemize}
-  \item Deliver CRUD operations for expenses with categories and payment methods, plus fast-add presets.
-  \item Provide monthly and custom-range analytics with interactive charts and inline saved PNGs.
-  \item Support budgeting, savings goals, and configurable spending alerts (default 80\%), with slider+input sync.
-  \item Auto-save plots (pie, daily trend, monthly comparison) for academic and managerial reporting.
-\end{itemize}
-
-\section{Literature Review}
-Lightweight dashboards using Streamlit have proven effective for rapid prototyping of analytics tools. SQLite remains a dependable embedded database for single-user desktop or small team scenarios. Plotly offers interactive exploration, while Matplotlib generates publication-ready images.
-
-\section{System Architecture}
-The architecture follows a layered pattern separating UI, services, and persistence. Streamlit orchestrates user interactions; service classes encapsulate analytics and budgeting logic; SQLite ensures durable storage. Figure~\ref{fig:architecture} highlights the data paths; saved plots flow to the `plots/` directory for inline viewing in Analytics.
-
-\begin{figure}[H]
-  \centering
-  \resizebox{\textwidth}{!}{
-  \begin{tikzpicture}[node distance=1.5cm and 2cm, >=Stealth, auto,
-      block/.style={draw, rounded corners, fill=blue!10, text width=3.5cm, align=center, minimum height=1.5cm},
-      service/.style={draw, rounded corners, fill=green!10, text width=3.5cm, align=center, minimum height=1.5cm},
-      db/.style={draw, rounded corners, fill=orange!10, text width=3cm, align=center, minimum height=1.5cm}]
+% =========================================================================================
+% COVER PAGE
+% =========================================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
     
-    \node[block] (ui) {Streamlit UI\\(Dashboard)};
-    \node[service, right=of ui] (services) {Services Layer\\(Logic)};
-    \node[db, right=of services] (db) {SQLite DB};
+    {\Large \textbf{Introduction to Python / Programming Fundamentals (TC2415 / TA2406)}}
     
-    \draw[->, thick] (ui) -- node[above] {Input} (services);
-    \draw[->, thick] (services) -- node[above] {Queries} (db);
-    \draw[->, thick] (db) |- ++(0,-2.5) -| node[pos=0.25, below] {Data} (ui);
-  \end{tikzpicture}
-  }
-  \caption{High-level system architecture.}
-  \label{fig:architecture}
-\end{figure}
-\vspace{8pt}
+    \vspace{1.5cm}
+    {\Large Project on}
+    
+    \vspace{0.5cm}
+    {\Huge \textbf{Streamlit Expense Analytics}}
+    
+    \vspace{1.5cm}
+    % LOGO PLACEHOLDER
+    \begin{figure}[h]
+        \centering
+        % User asked for "Thapar School of Liberal Arts logo png"
+        % Verify filename exists or upload typical name. Using expected placeholder.
+        \includegraphics[width=0.4\textwidth]{thapar_logo.png} 
+    \end{figure}
+    
+    \vspace{1.5cm}
+    
+    \begin{minipage}{0.45\textwidth}
+        \begin{flushleft} \large
+            \textbf{Submitted By:}\\
+            Liv Grewal (1424000076)\\
+            Gurman (1424000041)
+        \end{flushleft}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \begin{flushright} \large
+            \textbf{Submitted To:}\\
+            Dr. Anupam Garg
+        \end{flushright}
+    \end{minipage}
+    
+    \vfill
+    
+    {\large \textbf{Thapar School of Liberal Arts and Science}}\\
+    {\large Thapar Institute of Engineering and Technology, Patiala – 147001}
+    
+    \vspace{1.0cm}
+\end{titlepage}
 
-\section{Database Design}
-The database uses three tables shown in Table~\ref{tab:schema}. A single SQLite file (`expenses.db`) resides in the `data/` directory for portability.
+% =========================================================================================
+% TABLE OF CONTENTS (Custom Format)
+% =========================================================================================
+\newpage
+\begin{center}
+    \Large \textbf{Table of Contents}
+\end{center}
+\vspace{0.5cm}
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{p{3cm}p{3cm}p{7cm}}
-    \toprule
-    Table & Key Fields & Purpose \\
-    \midrule
-    expenses & id (PK), date, amount, category, payment\_method, notes & Stores atomic expense records. \\
-    budgets & id (PK), month (unique), budget, savings\_goal, created\_at & Tracks monthly budgets and goals. \\
-    settings & key (PK), value & Persists alert thresholds and preferences. \\
-    \bottomrule
-  \end{tabular}
-  \caption{SQLite schema overview.}
-  \label{tab:schema}
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|p{10cm}|c|}
+        \hline
+        \textbf{Sr. No.} & \textbf{Description} & \textbf{Page No.} \\
+        \hline
+        1. & Introduction to Project & \pageref{sec:intro} \\
+        \hline
+        2. & Python Concepts Used & \pageref{sec:concepts} \\
+        \hline
+        3. & Code & \pageref{sec:code} \\
+        \hline
+        4. & Output / Screen shots & \pageref{sec:output} \\
+        \hline
+    \end{tabular}
 \end{table}
 
-\section{Data Flow Diagrams}
-Figure~\ref{fig:dfd0} illustrates Level 0 with user interaction points; Figure~\ref{fig:dfd1} expands analytics and budgeting paths.
+\newpage
 
-\begin{figure}[H]
-  \centering
-  \resizebox{0.9\textwidth}{!}{
-  \begin{tikzpicture}[node distance=1.5cm and 2cm, >=Stealth, auto,
-      user/.style={draw, rounded corners, fill=blue!10, text width=2.5cm, align=center, minimum height=1.2cm},
-      app/.style={draw, rounded corners, fill=green!10, text width=3.5cm, align=center, minimum height=1.2cm},
-      db/.style={draw, rounded corners, fill=orange!10, text width=2.5cm, align=center, minimum height=1.2cm}]
-      
-    \node[user] (user) {User};
-    \node[app, right=of user] (process) {Streamlit App};
-    \node[db, right=of process] (store) {SQLite DB};
-    
-    \draw[->, thick] (user) -- node[above] {Inputs} (process);
-    \draw[->, thick] (process) -- node[above] {Queries} (store);
-    \draw[->, thick] (store) |- ++(0,-2.2) -| node[pos=0.25, below] {Reports} (user);
-  \end{tikzpicture}
-  }
-  \caption{DFD Level 0: User-system-data interaction.}
-  \label{fig:dfd0}
-\end{figure}
-\vspace{8pt}
+% =========================================================================================
+% SECTION I: INTRODUCTION
+% =========================================================================================
+\section{Introduction to Project}
+\label{sec:intro}
 
-\begin{figure}[H]
-  \centering
-  \resizebox{\textwidth}{!}{
-  \begin{tikzpicture}[node distance=2cm and 1.5cm, >=Stealth, auto,
-      comp/.style={draw, rounded corners, align=center, minimum height=1.2cm, text width=3cm}]
-      
-    \node[comp, fill=blue!10] (entry) {Expense Entry};
-    \node[comp, fill=green!10, right=of entry] (budget) {Budget Module};
-    \node[comp, fill=green!10, right=of budget] (analytics) {Analytics Engine};
-    \node[comp, fill=orange!10, below=of budget] (store) {SQLite Tables};
-    
-    \draw[->, thick] (entry) |- node[near start, left] {Save} (store);
-    \draw[->, thick] (budget) -- node[right] {Update} (store);
-    \draw[->, thick] (store) -| node[near start, below] {Fetch} (analytics);
-    
-    \draw[->, thick] (analytics) -- ++(0,1.5) node[midway, right] {CSV Export};
-    \draw[->, thick] (analytics) -- ++(0,-3.5) -| node[pos=0.25, below] {Visuals} (entry);
-  \end{tikzpicture}
-  }
-  \caption{DFD Level 1: Expense, budget, and analytics flows.}
-  \label{fig:dfd1}
-\end{figure}
-\vspace{8pt}
+\subsection{Overview}
+Streamlit Expense Analytics is a comprehensive personal finance dashboard designed to facilitate frictionless expense tracking, budgeting, and visualization. Built using Python's Streamlit framework, it integrates a lightweight SQLite database with powerful data processing libraries to provide real-time insights into financial habits.
 
-\section{Implementation Details}
-The UI is organized into sidebar navigation tabs. Expenses use a two-column form with quick-amount presets and prefilled defaults; management occurs through a selectable data grid with multi-delete and multi-row edit capabilities. Analytics queries leverage Pandas for aggregation, optimized with Streamlit caching (`@st.cache_data`) for performance. Matplotlib saves PNGs for the report while Plotly powers interactive charts. Budgets and alerts are persisted in SQLite, with synchronized slider and numeric inputs.
-
-\section{Streamlit Application Walkthrough}
-The application is divided into focused sections accessible from the sidebar, each designed for a specific phase of the personal finance workflow.
-
-\subsection{Dashboard}
-The Dashboard serves as the command center, providing immediate visibility into financial health. It features:
+\subsection{Problem Statement}
+Managing personal finances often involves tedious manual data entry or complex, expensive software. Users require a tool that is:
 \begin{itemize}
-    \item \textbf{Key Metrics}: Real-time display of Total Spent, Monthly Budget, and Remaining Budget.
-    \item \textbf{Interactive Charts}: Users can toggle between different time ranges (Current Month, Last 30 Days, YTD) and view breakdowns by Category or Payment Method.
-    \item \textbf{Trend Analysis}: A line chart visualizes spending velocity over time.
-\end{itemize}
-Figure~\ref{fig:ui} shows the dashboard interface with these metrics and charts active.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.9\textwidth]{../screenshots/streamlit_dashboard.png}
-  \caption{Streamlit dashboard with metrics and charts.}
-  \label{fig:ui}
-\end{figure}
-
-\subsection{Add Expense}
-The "Add Expense" module is optimized for speed. It defaults to the current date and remembers the last used category and payment method to reduce friction. A "Save \& Add Another" feature allows for rapid batch entry of receipts without reloading the page.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../screenshots/add_expense.png}
-  \caption{Add Expense interface with presets.}
-  \label{fig:add_expense}
-\end{figure}
-
-\subsection{Manage Expenses}
-This section provides a powerful data grid interface. Users can:
-\begin{itemize}
-    \item Filter expenses by date range, category, or text search.
-    \item Select multiple rows via checkboxes.
-    \item Click "Edit selected" to open a session-persistent bulk-edit table. IDs are locked to ensure integrity, while other fields remain modifiable. 
-    \item Perform bulk deletions or batch updates in a single transaction.
+    \item \textbf{Accessible}: Easy to run locally or in the cloud.
+    \item \textbf{Visual}: Provides immediate feedback through charts.
+    \item \textbf{Actionable}: Offers budget alerts and savings tracking.
 \end{itemize}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.9\textwidth]{../screenshots/manage_expenses.png}
-  \caption{Manage Expenses grid with multi-select.}
-  \label{fig:manage}
-\end{figure}
-
-\subsection{Analytics}
-The Analytics engine drives deeper insights. It generates three key visualizations that are automatically saved as static assets for reporting:
+\subsection{Objectives}
 \begin{itemize}
-    \item \textbf{Category Distribution}: A pie chart (Figure~\ref{fig:cat}) revealing the largest spending areas.
-    \item \textbf{Daily Trend}: A time-series plot (Figure~\ref{fig:trend}) to identify spending spikes.
-    \item \textbf{Monthly Comparison}: A bar chart (Figure~\ref{fig:monthly}) comparing spending across months.
+    \item To implement comprehensive CRUD (Create, Read, Update, Delete) operations for daily expenses.
+    \item To visualize spending patterns using interactive plots (Category Distribution, Trends, Monthly Comparisons).
+    \item To enable budget management with real-time "Red/Green" status indicators.
+    \item To ensure data persistence using a structured relational database (SQLite).
 \end{itemize}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\textwidth]{../plots/category_distribution.png}
-  \caption{Category distribution pie chart.}
-  \label{fig:cat}
-\end{figure}
+\subsection{System Architecture}
+The application follows a modular architecture separating the Presentation Layer (Streamlit UI), Logic Layer (Service Classes), and Data Layer (SQLite).
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.75\textwidth]{../plots/daily_trend.png}
-  \caption{Daily spending trend.}
-  \label{fig:trend}
-\end{figure}
+\begin{itemize}
+    \item \textbf{Frontend}: Streamlit handles all user interaction, form inputs, and chart rendering.
+    \item \textbf{Services}: Dedicated classes (\texttt{ExpenseService}, \texttt{AnalyticsService}) handle business logic and data transformation.
+    \item \textbf{Database}: A normalized SQLite schema stores expenses, budgets, and user settings.
+\end{itemize}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.78\textwidth]{../plots/monthly_comparison.png}
-  \caption{Decluttered month-wise spend.}
-  \label{fig:monthly}
-\end{figure}
+\subsection{Data Generation}
+To facilitate demonstration, the system includes an auto-seeding mechanism. On the first run, \texttt{ExpenseService.seed\_sample\_data()} populates the database with 100 synthetic records, ensuring the dashboard is immediately vibrant and useful for analysis.
 
-\subsection{Budgets \& Goals}
-Users can set a monthly budget and a savings goal. The interface uses a synchronized slider and number input, ensuring both ease of adjustment and precise value entry. Visual progress bars indicate how close the user is to their limit.
+\newpage
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../screenshots/budgets.png}
-  \caption{Budget configuration with synced sliders.}
-  \label{fig:budgets}
-\end{figure}
+% =========================================================================================
+% SECTION II: PYTHON CONCEPTS USED
+% =========================================================================================
+\section{Python Concepts Used}
+\label{sec:concepts}
 
-\section{Algorithms Used}
-Core computations involve grouping by category for pie-chart proportions, daily aggregation for line trends, and period-based grouping for month-wise bars. Budget alerts evaluate the ratio $r = \tfrac{spent}{budget}$ and trigger when $r \ge 0.8$ by default.
+This project utilizes a wide range of Python programming concepts and libraries to achieve its functionality.
 
-\section{Code Snippets}
-\begin{lstlisting}[language=Python, caption=Backend Service: Adding an expense to SQLite]
-@staticmethod
-def add_expense(data: Dict[str, Any]) -> int:
-    return execute(
-        "INSERT INTO expenses(date, amount, category, payment_method, notes) VALUES (?, ?, ?, ?, ?)",
-        (
-            data["date"],
-            float(data["amount"]),
-            data["category"],
-            data["payment_method"],
-            data.get("notes", ""),
-        ),
+\subsection{Core Libraries}
+\begin{itemize}
+    \item \textbf{Streamlit}: Usage of session state, caching mechanisms (\texttt{@st.cache\_data}), and widget synchronization for a reactive UI.
+    \item \textbf{Pandas}: Extensive use of DataFrames for filtering, grouping, aggregating, and time-series resampling of expense data.
+    \item \textbf{Plotly Express}: Creation of interactive, responsive charts (Donut charts, Line graphs) for the web interface.
+    \item \textbf{Matplotlib}: Generation of static PNG assets used for academic reporting and offline documentation.
+    \item \textbf{SQLite3}: Interaction with a SQL database using context managers and parameterized queries to prevent SQL injection.
+\end{itemize}
+
+\subsection{Programming Fundamentals}
+\begin{itemize}
+    \item \textbf{Object-Oriented Programming (OOP)}: Logic is encapsulated in static classes (\texttt{ExpenseService}, \texttt{BudgetService}) to maintain code organization.
+    \item \textbf{Decorators}: Implementation of caching decorators to optimize performance of heavy data processing functions.
+    \item \textbf{Type Hinting}: Use of \texttt{typing.List}, \texttt{typing.Dict}, and \texttt{typing.Optional} to ensure code clarity and robustness.
+    \item \textbf{File I/O}: Utilization of the \texttt{pathlib} module for cross-platform file path management (creating directories for plots/data).
+    \item \textbf{Exception Handling}: Robust error management during database connection and query execution.
+\end{itemize}
+
+\newpage
+
+% =========================================================================================
+% SECTION III: CODE
+% =========================================================================================
+\section{Code}
+\label{sec:code}
+
+The following sections present the core source code of the application.
+
+\subsection{Main Application (app.py)}
+\begin{lstlisting}[language=Python]
+import datetime
+from pathlib import Path
+from typing import List
+
+import pandas as pd
+import streamlit as st
+import plotly.express as px
+
+from db.database import init_db
+from constants import CATEGORIES, PAYMENT_METHODS
+from services.analytics_service import AnalyticsService
+from services.budget_service import BudgetService
+from services.expense_service import ExpenseService
+
+PLOTS_DIR = Path(__file__).resolve().parent / "plots"
+DATA_DIR = Path(__file__).resolve().parent / "data"
+
+
+def init_app_state() -> None:
+    init_db()
+    ExpenseService.seed_sample_data()
+    PLOTS_DIR.mkdir(exist_ok=True, parents=True)
+    DATA_DIR.mkdir(exist_ok=True, parents=True)
+
+
+def inject_css() -> None:
+    st.markdown(
+        """
+        <style>
+        .block-container {padding-top: 1.5rem; padding-bottom: 2rem;}
+        .metric-row {margin-top: 0.5rem; margin-bottom: 0.5rem;}
+        .metric-row .element-container {padding: 0.4rem 0.6rem;}
+        .stDataFrame {border-radius: 6px; border: 1px solid #e0e0e0;}
+        .pill {display: inline-block; padding: 4px 10px; border-radius: 16px; background: #eef3ff; color: #1f3c88; font-size: 12px; margin-right: 6px;}
+        .section-card {padding: 1rem; border: 1px solid #e5e5e5; border-radius: 10px; background: #fafafa;}
+        </style>
+        """,
+        unsafe_allow_html=True,
     )
-\end{lstlisting}
 
-\begin{lstlisting}[language=Python, caption=Streamlit UI: Add Expense Form Structure]
-with st.form("add_expense"):
-    c1, c2 = st.columns(2)
-    with c1:
-        date = st.date_input("Date", datetime.date.today())
-    with c2:
-        amount = st.number_input("Amount", min_value=0.0, format="%.2f")
-    
-    category = st.selectbox("Category", ["Food", "Transport", "Utilities", "Other"])
-    payment_method = st.selectbox("Payment Method", ["UPI", "Cash", "Card"])
-    
-    if st.form_submit_button("Save Expense"):
-        ExpenseService.add_expense({
-            "date": str(date), "amount": amount,
-            "category": category, "payment_method": payment_method
-        })
-\end{lstlisting}
 
-\begin{lstlisting}[language=Python, caption=Multi-row edit with session state persistence]
-if st.button("Edit selected"):
-    st.session_state["editing_ids"] = selected_ids
-    st.rerun()
+def add_expense_ui():
+    st.header("Add Expense")
+    last_df = ExpenseService.list_expenses().sort_values("date")
+    last_expense = last_df.iloc[-1] if not last_df.empty else None
 
-if "editing_ids" in st.session_state:
-    # ... load data for ids ...
-    edited = st.data_editor(to_edit, disabled=["id"])
-    if st.button("Save Changes"):
-        for _, row in edited.iterrows():
-            ExpenseService.update_expense(row["id"], row)
-        del st.session_state["editing_ids"]
-        st.rerun()
-\end{lstlisting}
+    if last_expense is not None:
+        st.caption(
+            f"Last: {pd.to_datetime(last_expense['date']).date()} • {last_expense['category']} • ₹{last_expense['amount']:.0f} • {last_expense['payment_method']}"
+        )
 
-\begin{lstlisting}[language=Python, caption=Generating and saving the Category Distribution plot]
-@staticmethod
-def category_distribution(df: pd.DataFrame) -> Tuple[plt.Figure, pd.Series]:
+    with st.form("add_expense"):
+        c1, c2 = st.columns(2)
+        with c1:
+            date = st.date_input("Date", datetime.date.today())
+        default_amount = float(last_expense["amount"]) if last_expense is not None else 0.0
+        quick_amount = st.radio(
+            "Quick amount (optional)",
+            options=[0, 250, 500, 1000, 2000],
+            index=0,
+            horizontal=True,
+            format_func=lambda x: "None" if x == 0 else f"₹{x}",
+        )
+        with c2:
+            amount = st.number_input(
+                "Amount", min_value=0.0, value=float(quick_amount or default_amount), format="%.2f"
+            )
+
+        c3, c4 = st.columns(2)
+        with c3:
+            category = st.selectbox(
+                "Category",
+                CATEGORIES,
+                index=0 if last_expense is None else CATEGORIES.index(last_expense["category"]) if last_expense.get("category") in CATEGORIES else 0,
+            )
+        with c4:
+            payment_method = st.selectbox(
+                "Payment Method",
+                PAYMENT_METHODS,
+                index=0 if last_expense is None else PAYMENT_METHODS.index(last_expense["payment_method"]) if last_expense.get("payment_method") in PAYMENT_METHODS else 0,
+            )
+
+        notes = st.text_area("Notes", placeholder="Add a short description (optional)")
+        col_btn1, col_btn2 = st.columns(2)
+        save = col_btn1.form_submit_button("Save Expense", type="primary")
+        save_add = col_btn2.form_submit_button("Save & add another")
+
+    if save or save_add:
+        if amount <= 0:
+            st.warning("Amount must be greater than zero.")
+            return
+        ExpenseService.add_expense(
+            {
+                "date": str(date),
+                "amount": amount,
+                "category": category,
+                "payment_method": payment_method,
+                "notes": notes,
+            }
+        )
+        st.success("Expense saved.")
+        if save_add:
+            st.rerun()
+
+
+def manage_expenses_ui():
+    st.header("Manage Expenses")
+    df = ExpenseService.list_expenses()
     if df.empty:
-        return plt.figure(), pd.Series(dtype=float)
-    
-    # Group by category and sum amounts
-    breakdown = df.groupby("category")["amount"].sum().sort_values(ascending=False)
-    
-    # Create pie chart
-    fig, ax = plt.subplots(figsize=(6, 4))
-    breakdown.plot(kind="pie", autopct="%1.1f%%", startangle=90, ax=ax)
-    ax.set_ylabel("")
-    ax.set_title("Category Distribution")
-    fig.tight_layout()
-    
-    # Save for report inclusion
-    fig.savefig(PLOTS_DIR / "category_distribution.png", dpi=200)
-    return fig, breakdown
+        st.info("No expenses yet.")
+        return
+    df["date"] = pd.to_datetime(df["date"])
+    min_date, max_date = df["date"].min().date(), df["date"].max().date()
+
+    with st.expander("Filters", expanded=True):
+        colf1, colf2 = st.columns(2)
+        with colf1:
+            start_date, end_date = st.date_input("Date range", value=(min_date, max_date))
+        with colf2:
+            search_text = st.text_input("Search notes or payee", placeholder="Type to filter")
+
+        colf3, colf4 = st.columns(2)
+        categories = sorted(df["category"].unique().tolist())
+        selected_categories = st.multiselect("Categories", categories, default=categories)
+        with colf4:
+            methods = sorted(df["payment_method"].unique().tolist())
+            selected_methods = st.multiselect("Payment methods", methods, default=methods)
+
+        sort_choice = st.selectbox(
+            "Sort by",
+            ["Date (newest)", "Date (oldest)", "Amount (high to low)", "Amount (low to high)"],
+            index=0,
+        )
+
+    filtered = df.copy()
+    if start_date and end_date:
+        filtered = filtered[(filtered["date"] >= pd.to_datetime(start_date)) & (filtered["date"] <= pd.to_datetime(end_date))]
+    if selected_categories:
+        filtered = filtered[filtered["category"].isin(selected_categories)]
+    if selected_methods:
+        filtered = filtered[filtered["payment_method"].isin(selected_methods)]
+    if search_text:
+        filtered = filtered[filtered["notes"].fillna("").str.contains(search_text, case=False, na=False)]
+
+    if filtered.empty:
+        st.info("No expenses match these filters.")
+        return
+
+    sort_map = {
+        "Date (newest)": ("date", False),
+        "Date (oldest)": ("date", True),
+        "Amount (high to low)": ("amount", False),
+        "Amount (low to high)": ("amount", True),
+    }
+    sort_col, ascending = sort_map[sort_choice]
+    filtered = filtered.sort_values(sort_col, ascending=ascending)
+
+    view_cols = ["id", "date", "category", "payment_method", "amount", "notes"]
+    view_df = filtered[view_cols].copy()
+    view_df["Select"] = False
+    view_df = view_df[["Select"] + view_cols]
+
+    edited_df = st.data_editor(
+        view_df,
+        hide_index=True,
+        use_container_width=True,
+        disabled=["id", "date", "category", "payment_method", "amount", "notes"],
+        column_config={
+            "Select": st.column_config.CheckboxColumn(required=False),
+            "id": st.column_config.Column("ID", width="small"),
+            "date": st.column_config.DateColumn("Date", format="YYYY-MM-DD"),
+            "category": st.column_config.Column("Category"),
+            "payment_method": st.column_config.Column("Payment"),
+            "amount": st.column_config.NumberColumn("Amount", format="₹%.0f"),
+            "notes": st.column_config.Column("Notes"),
+        },
+    )
+
+    selected_rows = edited_df[edited_df["Select"]]
+    selected_ids = selected_rows["id"].astype(int).tolist()
+
+    act_col1, act_col2 = st.columns(2)
+    with act_col1:
+        if st.button("Delete selected", type="secondary"):
+            if not selected_ids:
+                st.warning("Pick at least one row to delete.")
+            else:
+                for eid in selected_ids:
+                    ExpenseService.delete_expense(eid)
+                st.success(f"Deleted {len(selected_ids)} expense(s).")
+                st.rerun()
+
+    with act_col2:
+        if st.button("Edit selected", type="primary"):
+            if not selected_ids:
+                st.warning("Select at least one row to edit.")
+            else:
+                st.session_state["editing_ids"] = selected_ids
+                st.rerun()
+
+    if "editing_ids" in st.session_state:
+        ids_to_edit = st.session_state["editing_ids"]
+        to_edit = df[df["id"].isin(ids_to_edit)].copy()
+        
+        if to_edit.empty:
+            del st.session_state["editing_ids"]
+            st.rerun()
+
+        st.subheader(f"Editing {len(to_edit)} Expense(s)")
+        st.info("Modify rows below and click Save.")
+
+        edited_data = st.data_editor(
+            to_edit,
+            hide_index=True,
+            use_container_width=True,
+            disabled=["id"],
+            column_config={
+                "id": st.column_config.Column("ID", disabled=True),
+                "date": st.column_config.DateColumn("Date", format="YYYY-MM-DD", required=True),
+                "amount": st.column_config.NumberColumn("Amount", min_value=0.0, format="%.2f", required=True),
+                "category": st.column_config.SelectboxColumn("Category", options=CATEGORIES, required=True),
+                "payment_method": st.column_config.SelectboxColumn(
+                    "Payment", options=PAYMENT_METHODS, required=True
+                ),
+                "notes": st.column_config.TextColumn("Notes"),
+            },
+            key="editor_multi",
+        )
+
+        ec1, ec2 = st.columns(2)
+        with ec1:
+            if st.button("Save Changes", type="primary"):
+                for idx, row in edited_data.iterrows():
+                    d_val = row["date"]
+                    if hasattr(d_val, "date"):
+                        d_str = str(d_val.date())
+                    else:
+                        d_str = str(d_val).split(" ")[0]
+
+                    ExpenseService.update_expense(
+                        int(row["id"]),
+                        {
+                            "date": d_str,
+                            "amount": float(row["amount"]),
+                            "category": row["category"],
+                            "payment_method": row["payment_method"],
+                            "notes": row["notes"],
+                        },
+                    )
+                st.success(f"Updated {len(edited_data)} expenses.")
+                del st.session_state["editing_ids"]
+                st.rerun()
+        
+        with ec2:
+            if st.button("Cancel"):
+                del st.session_state["editing_ids"]
+                st.rerun()
+
+
+def analytics_ui():
+    st.header("Analytics")
+    df = ExpenseService.list_expenses()
+    if df.empty:
+        st.info("Add expenses to view analytics.")
+        return
+    df["date"] = pd.to_datetime(df["date"])
+    min_date, max_date = df["date"].min(), df["date"].max()
+    start, end = st.date_input("Date Range", value=(min_date.date(), max_date.date()))
+    filtered = df[(df["date"] >= pd.to_datetime(start)) & (df["date"] <= pd.to_datetime(end))]
+    if filtered.empty:
+        st.warning("No data in selected range.")
+        return
+
+    col1, col2 = st.columns(2)
+    with col1:
+        fig_cat, breakdown = AnalyticsService.category_distribution(filtered)
+        st.pyplot(fig_cat)
+        st.download_button(
+            "Download Category Chart",
+            data=(PLOTS_DIR / "category_distribution.png").read_bytes(),
+            file_name="category_distribution.png",
+        )
+    with col2:
+        fig_daily, plotly_daily = AnalyticsService.daily_trend(filtered)
+        if plotly_daily is not None:
+            st.plotly_chart(plotly_daily, use_container_width=True)
+        else:
+            st.pyplot(fig_daily)
+
+    fig_monthly, plotly_monthly = AnalyticsService.monthly_comparison(filtered)
+    if plotly_monthly is not None:
+        st.plotly_chart(plotly_monthly, use_container_width=True)
+    else:
+        st.pyplot(fig_monthly)
+
+    st.subheader("Summary Table")
+    summary = filtered.groupby("category")["amount"].agg(["sum", "mean", "count"]).reset_index()
+    st.dataframe(summary)
+
+    saved_plots = sorted(PLOTS_DIR.glob("*.png"))
+    if saved_plots:
+        st.subheader("Saved Plots")
+        cols = st.columns(2)
+        for idx, plot_path in enumerate(saved_plots):
+            with cols[idx % 2]:
+                if plot_path.exists():
+                    st.image(str(plot_path), caption=plot_path.name, use_container_width=True)
+    else:
+        st.caption("No saved plots yet.")
+
+
+
+def budget_ui():
+    st.header("Budgets & Goals")
+    today = datetime.date.today()
+    default_month = today.strftime("%Y-%m")
+    month = st.text_input("Month (YYYY-MM)", value=default_month)
+    budget_row = BudgetService.get_budget(month)
+    existing_budget = budget_row.get("budget", 0.0) if budget_row else 0.0
+    existing_goal = budget_row.get("savings_goal", 0.0) if budget_row else 0.0
+    df = ExpenseService.list_expenses()
+    df["date"] = pd.to_datetime(df["date"]) if not df.empty else pd.to_datetime([])
+    current_period = pd.to_datetime(f"{month}-01").to_period("M") if month else today.to_period("M")
+    month_spent = df[df["date"].dt.to_period("M") == current_period]["amount"].sum() if not df.empty else 0.0
+
+    suggested_budget = max(existing_budget, month_spent * 1.2 if month_spent else 5000)
+    budget_ceiling = max(suggested_budget * 1.5, 5000)
+    suggested_goal = max(existing_goal, budget_ceiling * 0.1)
+
+    # Default values must be defined before use
+    budget_default = float(existing_budget or suggested_budget)
+    goal_default = float(existing_goal or suggested_goal)
+
+    # Initialize session state for synced widgets if not present
+    if "budget_slider" not in st.session_state:
+        st.session_state["budget_slider"] = budget_default
+    if "budget_input" not in st.session_state:
+        st.session_state["budget_input"] = budget_default
+    if "goal_slider" not in st.session_state:
+        st.session_state["goal_slider"] = goal_default
+    if "goal_input" not in st.session_state:
+        st.session_state["goal_input"] = goal_default
+
+    def sync_budget_from_slider():
+        st.session_state["budget_input"] = st.session_state["budget_slider"]
+
+    def sync_budget_from_input():
+        st.session_state["budget_slider"] = st.session_state["budget_input"]
+
+    def sync_goal_from_slider():
+        st.session_state["goal_input"] = st.session_state["goal_slider"]
+
+    def sync_goal_from_input():
+        st.session_state["goal_slider"] = st.session_state["goal_input"]
+
+    bc1, bc2 = st.columns(2)
+    with bc1:
+        st.slider(
+            "Monthly Budget",
+            min_value=0.0,
+            max_value=float(budget_ceiling),
+            step=100.0,
+            key="budget_slider",
+            on_change=sync_budget_from_slider,
+        )
+        st.number_input(
+            "Monthly Budget (exact)",
+            min_value=0.0,
+            step=100.0,
+            format="%.2f",
+            key="budget_input",
+            on_change=sync_budget_from_input,
+        )
+        budget = st.session_state["budget_input"]
+        st.caption(f"Spent this month: ₹{month_spent:.0f}")
+    with bc2:
+        st.slider(
+            "Savings Goal",
+            min_value=0.0,
+            max_value=float(budget_ceiling),
+            step=100.0,
+            key="goal_slider",
+            on_change=sync_goal_from_slider,
+        )
+        st.number_input(
+            "Savings Goal (exact)",
+            min_value=0.0,
+            step=100.0,
+            format="%.2f",
+            key="goal_input",
+            on_change=sync_goal_from_input,
+        )
+        goal = st.session_state["goal_input"]
+        st.caption("Tip: aim for 10-20% of budget.")
+
+    if st.button("Save Budget", type="primary"):
+        BudgetService.set_budget(month, budget, goal)
+        st.success("Budget updated.")
+
+    progress = BudgetService.monthly_progress(df, month)
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Spent", f"₹{progress['spent']:.2f}")
+    m2.metric("Budget", f"₹{progress['budget']:.2f}")
+    m3.metric("Remaining", f"₹{progress['remaining']:.2f}")
+    if progress["budget"] > 0:
+        st.progress(min(progress["spent"] / progress["budget"], 1.0), text=f"{progress['spent'] / progress['budget'] * 100:.1f}% of budget used")
+
+    alert = BudgetService.spending_alert(progress["spent"], progress["budget"])
+    if alert:
+        st.error(alert)
+
+
+
+def settings_ui():
+    st.header("Settings")
+    current_threshold = float(BudgetService.get_setting("alert_threshold", str(BudgetService.DEFAULT_ALERT_THRESHOLD)))
+    with st.form("settings_form"):
+        threshold = st.slider("Alert Threshold (ratio of budget)", min_value=0.5, max_value=1.0, value=current_threshold, step=0.05)
+        submitted = st.form_submit_button("Save Settings")
+        if submitted:
+            BudgetService.save_setting("alert_threshold", str(threshold))
+            st.success("Settings saved.")
+    st.caption("Spending alerts trigger when spending exceeds the configured threshold of your monthly budget.")
+
+
+def export_ui():
+    st.header("Export")
+    df = ExpenseService.list_expenses()
+    if df.empty:
+        st.info("Nothing to export.")
+        return
+    csv_bytes = df.to_csv(index=False).encode("utf-8")
+    st.download_button("Download CSV", data=csv_bytes, file_name="expenses.csv", mime="text/csv")
+    st.caption("Use the CSV in spreadsheets or BI tools for deeper analysis.")
+
+
+def dashboard_ui():
+    st.header("Dashboard")
+    df = ExpenseService.list_expenses()
+    if df.empty:
+        st.info("Add expenses to view insights.")
+        return
+    df["date"] = pd.to_datetime(df["date"])
+    current_month = datetime.date.today().strftime("%Y-%m")
+    monthly_df = df[df["date"].dt.to_period("M") == pd.to_datetime(current_month + "-01").to_period("M")]
+    total_spent = monthly_df["amount"].sum() if not monthly_df.empty else 0.0
+    budget_row = BudgetService.get_budget(current_month)
+    budget = budget_row.get("budget", 0.0) if budget_row else 0.0
+    savings_goal = budget_row.get("savings_goal", 0.0) if budget_row else 0.0
+    remaining = max(budget - total_spent, 0.0)
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Month", current_month)
+    col2.metric("Spent", f"₹{total_spent:.2f}")
+    col3.metric("Budget", f"₹{budget:.2f}")
+    col4.metric("Remaining", f"₹{remaining:.2f}")
+
+    if alert_msg := BudgetService.spending_alert(total_spent, budget):
+        st.error(alert_msg)
+
+    # Dashboard highlights
+    total_txns = len(monthly_df)
+    avg_daily = monthly_df.groupby(monthly_df["date"].dt.date)["amount"].sum().mean() if not monthly_df.empty else 0.0
+    top_cat_row = monthly_df.groupby("category")["amount"].sum().sort_values(ascending=False).reset_index().head(1)
+    top_cat = f"{top_cat_row.iloc[0]['category']} (₹{top_cat_row.iloc[0]['amount']:.0f})" if not top_cat_row.empty else "-"
+
+    highlights_col1, highlights_col2, highlights_col3 = st.columns(3)
+    highlights_col1.metric("Transactions", total_txns)
+    highlights_col2.metric("Avg Daily Spend", f"₹{avg_daily:.0f}")
+    highlights_col3.metric("Top Category", top_cat)
+
+    if budget > 0:
+        usage = min(total_spent / budget, 1.0)
+        st.progress(usage, text=f"{usage*100:.1f}% of budget used")
+
+    overview_tab, charts_tab = st.tabs(["Overview", "Charts"])
+
+    with overview_tab:
+        st.subheader("Recent Expenses")
+        st.dataframe(monthly_df.sort_values("date", ascending=False).head(10))
+
+        st.subheader("Category Summary")
+        cat_summary = monthly_df.groupby("category")["amount"].agg(["sum", "mean", "count"]).reset_index()
+        st.dataframe(cat_summary)
+
+    with charts_tab:
+        # Dashboard charts can be widened beyond current month to avoid empty categories.
+        chart_range = st.selectbox(
+            "Chart range",
+            ["Current Month", "Last 30 Days", "Year-to-date", "All Time"],
+            index=0,
+        )
+        col_opts1, col_opts2 = st.columns(2)
+        with col_opts1:
+            breakdown = st.selectbox("Breakdown", ["Category", "Payment Method"], index=0)
+        with col_opts2:
+            agg_period = st.selectbox("Trend granularity", ["Daily", "Weekly", "Monthly"], index=0)
+
+        if chart_range == "Current Month":
+            chart_df = monthly_df
+            range_label = "Current Month"
+        elif chart_range == "Last 30 Days":
+            start = pd.to_datetime(datetime.date.today() - datetime.timedelta(days=30))
+            chart_df = df[df["date"] >= start]
+            range_label = "Last 30 Days"
+        elif chart_range == "Year-to-date":
+            start = pd.to_datetime(datetime.date(datetime.date.today().year, 1, 1))
+            chart_df = df[df["date"] >= start]
+            range_label = "Year-to-date"
+        else:
+            chart_df = df
+            range_label = "All Time"
+
+        if chart_df.empty:
+            st.info("No data for the selected range.")
+        else:
+            if breakdown == "Category":
+                dim_col = "category"
+                dims = CATEGORIES
+            else:
+                dim_col = "payment_method"
+                dims = PAYMENT_METHODS
+
+            cat_totals = (
+                chart_df.groupby(dim_col)["amount"].sum()
+                .reindex(dims, fill_value=0)
+                .reset_index()
+            )
+            donut = px.pie(cat_totals, names=dim_col, values="amount", hole=0.45, title=f"{breakdown} Mix ({range_label})")
+
+            freq_map = {"Daily": "D", "Weekly": "W-MON", "Monthly": "MS"}
+            daily_totals = (
+                chart_df.set_index("date")["amount"].resample(freq_map[agg_period]).sum().reset_index()
+            )
+            daily_line = px.line(daily_totals, x="date", y="amount", markers=True, title=f"Trend ({agg_period}, {range_label})")
+
+            bar_all = px.bar(cat_totals.sort_values("amount", ascending=False), x=dim_col, y="amount", title=f"{breakdown} Totals ({range_label})")
+
+            chart_col1, chart_col2 = st.columns(2)
+            with chart_col1:
+                st.plotly_chart(donut, use_container_width=True)
+            with chart_col2:
+                st.plotly_chart(daily_line, use_container_width=True)
+
+            st.plotly_chart(bar_all, use_container_width=True)
+
+
+
+NAVIGATION = ["Dashboard", "Add Expense", "Manage Expenses", "Analytics", "Budgets & Goals", "Settings", "Export"]
+
+
+def main():
+    st.set_page_config(page_title="Expense Analytics", layout="wide")
+    inject_css()
+    init_app_state()
+    st.sidebar.title("Expense Analytics")
+    choice = st.sidebar.radio("Navigate", NAVIGATION, key="navigation_radio")
+
+    if choice == "Dashboard":
+        dashboard_ui()
+    elif choice == "Add Expense":
+        add_expense_ui()
+    elif choice == "Manage Expenses":
+        manage_expenses_ui()
+    elif choice == "Analytics":
+        analytics_ui()
+    elif choice == "Budgets & Goals":
+        budget_ui()
+    elif choice == "Settings":
+        settings_ui()
+    elif choice == "Export":
+        export_ui()
+
+
+if __name__ == "__main__":
+    main()
 \end{lstlisting}
 
-\section{Testing and Test Cases}
-Manual test cases covered: (a) expense creation with missing fields (rejected), (b) budget creation and alert at 80\% threshold, (c) date-range filters returning expected aggregates, (d) CSV export opened in spreadsheet to validate row counts. Charts regenerated during each run to confirm saved PNGs exist.
+\subsection{Expense Service (services/expense\_service.py)}
+\begin{lstlisting}[language=Python]
+from datetime import datetime
+from typing import Any, Dict, Optional
+import pandas as pd
+from constants import CATEGORIES, PAYMENT_METHODS
+from db.database import execute, fetch_all
 
-\section{Conclusion}
-The Streamlit Expense Analytics project delivers a concise yet comprehensive budgeting assistant. Users can input data quickly, view insights instantly, and export visuals for academic or managerial documentation.
+class ExpenseService:
+    @staticmethod
+    def add_expense(data: Dict[str, Any]) -> int:
+        return execute(
+            "INSERT INTO expenses(date, amount, category, payment_method, notes) VALUES (?, ?, ?, ?, ?)",
+            (data["date"], float(data["amount"]), data["category"], data["payment_method"], data.get("notes", ""))
+        )
 
-\section{Future Scope}
-Future work includes user authentication, cloud persistence, OCR receipt ingestion, and predictive forecasting of monthly burn rates using ARIMA or Prophet.
+    @staticmethod
+    def update_expense(expense_id: int, data: Dict[str, Any]) -> None:
+        execute(
+            "UPDATE expenses SET date=?, amount=?, category=?, payment_method=?, notes=? WHERE id=?",
+            (data["date"], float(data["amount"]), data["category"], data["payment_method"], data.get("notes", ""), expense_id)
+        )
 
-\section{References}
-\begin{itemize}
-  \item Streamlit Documentation: \url{https://docs.streamlit.io/}
-  \item SQLite Documentation: \url{https://www.sqlite.org/docs.html}
-  \item Plotly Express User Guide: \url{https://plotly.com/python/plotly-express/}
-\end{itemize}
+    @staticmethod
+    def delete_expense(expense_id: int) -> None:
+        execute("DELETE FROM expenses WHERE id=?", (expense_id,))
+
+    @staticmethod
+    def list_expenses() -> pd.DataFrame:
+        rows = fetch_all("SELECT * FROM expenses ORDER BY date DESC")
+        return pd.DataFrame(rows, columns=rows[0].keys() if rows else [])
+
+    @staticmethod
+    def get_expense(expense_id: int) -> Optional[Dict[str, Any]]:
+        rows = fetch_all("SELECT * FROM expenses WHERE id=?", (expense_id,))
+        if not rows:
+            return None
+        row = rows[0]
+        return dict(row)
+
+    @staticmethod
+    def seed_sample_data() -> None:
+        if fetch_all("SELECT COUNT(*) as cnt FROM expenses")[0]["cnt"] > 0:
+            return
+        start_date = datetime.strptime("2025-01-01", "%Y-%m-%d").date()
+        end_date = datetime.today().date()
+        categories = CATEGORIES
+        payments = PAYMENT_METHODS
+
+        dates = pd.date_range(start=start_date, end=end_date, periods=100)
+        for i, day in enumerate(dates):
+            category = categories[i % len(categories)]
+            payment = payments[i % len(payments)]
+            # Scaled for INR-like spends
+            amount = round(300 + (i % 9) * 120 + (i % 5) * 40 + (i % 7) * 25 + (i % 3) * 15, 2)
+            note = f"Auto-sample #{i+1} for {category.lower()}"
+            ExpenseService.add_expense(
+                {
+                    "date": str(day.date()),
+                    "amount": amount,
+                    "category": category,
+                    "payment_method": payment,
+                    "notes": note,
+                }
+            )
+\end{lstlisting}
+
+\subsection{Analytics Service (services/analytics\_service.py)}
+\begin{lstlisting}[language=Python]
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, Tuple
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+
+from db.database import fetch_all
+
+PLOTS_DIR = Path(__file__).resolve().parent.parent / "plots"
+PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+class AnalyticsService:
+    @staticmethod
+    def _load_dataframe() -> pd.DataFrame:
+        rows = fetch_all("SELECT * FROM expenses")
+        df = pd.DataFrame(rows, columns=rows[0].keys() if rows else [])
+        if df.empty:
+            return df
+        df["date"] = pd.to_datetime(df["date"])
+        return df
+
+    @staticmethod
+    def monthly_summary(month: str) -> pd.DataFrame:
+        df = AnalyticsService._load_dataframe()
+        if df.empty:
+            return df
+        month_dt = pd.to_datetime(month + "-01")
+        filtered = df[df["date"].dt.to_period("M") == month_dt.to_period("M")]
+        return filtered
+
+    @staticmethod
+    @st.cache_data
+    def category_distribution(df: pd.DataFrame) -> Tuple[plt.Figure, pd.Series]:
+        if df.empty:
+            return plt.figure(), pd.Series(dtype=float)
+        breakdown = df.groupby("category")["amount"].sum().sort_values(ascending=False)
+        fig, ax = plt.subplots(figsize=(6, 4))
+        breakdown.plot(kind="pie", autopct="%1.1f%%", startangle=90, ax=ax)
+        ax.set_ylabel("")
+        ax.set_title("Category Distribution")
+        fig.tight_layout()
+        fig.savefig(PLOTS_DIR / "category_distribution.png", dpi=200)
+        return fig, breakdown
+
+    @staticmethod
+    @st.cache_data
+    def daily_trend(df: pd.DataFrame):
+        if df.empty:
+            return plt.figure(), None
+        trend = df.groupby("date")["amount"].sum().reset_index()
+        fig, ax = plt.subplots(figsize=(6, 4))
+        ax.plot(trend["date"], trend["amount"], marker="o")
+        ax.set_title("Daily Spending Trend")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Amount")
+        ax.grid(True, linestyle="--", alpha=0.5)
+        fig.autofmt_xdate()
+        fig.tight_layout()
+        fig.savefig(PLOTS_DIR / "daily_trend.png", dpi=200)
+        plotly_fig = px.line(trend, x="date", y="amount", title="Daily Spending Trend")
+        return fig, plotly_fig
+
+    @staticmethod
+    @st.cache_data
+    def monthly_comparison(df: pd.DataFrame):
+        if df.empty:
+            return plt.figure(), None
+        monthly = (
+            df.assign(month=df["date"].dt.to_period("M"))
+            .groupby("month")["amount"]
+            .sum()
+            .reset_index()
+        )
+        monthly["month"] = monthly["month"].astype(str)
+        fig, ax = plt.subplots(figsize=(8, 5))
+        bars = ax.bar(monthly["month"], monthly["amount"], color="#4C72B0")
+        ax.set_title("Month-wise Spend")
+        ax.set_xlabel("Month")
+        ax.set_ylabel("Amount")
+        ax.tick_params(axis="x", rotation=45, labelsize=9)
+
+        if len(monthly) <= 12:
+            for rect, val in zip(bars, monthly["amount"]):
+                ax.text(rect.get_x() + rect.get_width() / 2, val + max(monthly["amount"]) * 0.01, f"{val:,.0f}", ha="center", va="bottom", fontsize=8)
+
+        fig.tight_layout()
+        fig.savefig(PLOTS_DIR / "monthly_comparison.png", dpi=200)
+
+        plotly_fig = px.bar(monthly, x="month", y="amount", title="Month-wise Spend")
+        plotly_fig.update_layout(xaxis_tickangle=-45, bargap=0.2)
+        if len(monthly) > 12:
+            plotly_fig.update_traces(text=None)
+        else:
+            plotly_fig.update_traces(texttemplate="%{y:,.0f}", textposition="outside")
+        return fig, plotly_fig
+
+    @staticmethod
+    def export_custom_range(start_date: str, end_date: str) -> pd.DataFrame:
+        df = AnalyticsService._load_dataframe()
+        if df.empty:
+            return df
+        mask = (df["date"] >= pd.to_datetime(start_date)) & (df["date"] <= pd.to_datetime(end_date))
+        return df.loc[mask]
+\end{lstlisting}
+
+\newpage
+
+% =========================================================================================
+% SECTION IV: OUTPUT / SCREENSHOTS
+% =========================================================================================
+\section{Output / Screen shots}
+\label{sec:output}
+
+\subsection{Dashboard Output}
+The main dashboard displays real-time metrics, budget status, and expense trends.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{streamlit_dashboard.png}
+    \caption{Project Dashboard}
+\end{figure}
+
+\subsection{Data Entry Interface}
+A simplified form allows for rapid logging of daily expenses with auto-filled defaults.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{add_expense.png}
+    \caption{Add Expense Module}
+\end{figure}
+
+\subsection{Expense Management Grid}
+The data grid supports multi-row selection, bulk deletion, and inline editing.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{manage_expenses.png}
+    \caption{Manage Expenses Grid}
+\end{figure}
+
+\subsection{Generated Analytics Plots}
+The system automatically retains high-quality visualizations for reporting.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{category_distribution.png}
+    \caption{Categorical Breakdown}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{daily_trend.png}
+    \caption{Daily Spending Trend}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{monthly_comparison.png}
+    \caption{Monthly Comparison}
+\end{figure}
 
 \end{document}
